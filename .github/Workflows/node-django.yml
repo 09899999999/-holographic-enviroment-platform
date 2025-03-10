@@ -1,0 +1,41 @@
+name: Backend CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  node_django_test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Node.js steps
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'  # Change to the version you need
+        
+      - name: Install dependencies (Node.js)
+        run: npm install
+        
+      - name: Run Node.js tests
+        run: npm test
+
+      # Python/Django steps
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'  # Adjust for your project
+
+      - name: Install dependencies (Django)
+        run: pip install -r backend/requirements.txt
+        
+      - name: Run Django tests
+        run: python manage.py test
